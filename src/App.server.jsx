@@ -15,6 +15,7 @@ import {
 } from '@shopify/hydrogen';
 import {HeaderFallback, EventsListener} from '~/components';
 import {NotFound} from '~/components/index.server';
+import AnalyticsListener from './components/AnalyticsListener.client';
 
 function App({request}) {
   const pathname = new URL(request.normalizedUrl).pathname;
@@ -32,34 +33,37 @@ function App({request}) {
   });
 
   return (
-    <Suspense fallback={<HeaderFallback isHome={isHome} />}>
-      <EventsListener />
-      <ShopifyProvider countryCode={countryCode}>
-        <Seo
-          type="defaultSeo"
-          data={{
-            title: 'Hydrogen',
-            description:
-              "A custom storefront powered by Hydrogen, Shopify's React-based framework for building headless.",
-            titleTemplate: `%s · Hydrogen`,
-          }}
-        />
-        <CartProvider
-          countryCode={countryCode}
-          customerAccessToken={customerAccessToken}
-        >
-          <Router>
-            <FileRoutes
-              basePath={countryCode ? `/${countryCode}/` : undefined}
-            />
-            <Route path="*" page={<NotFound />} />
-          </Router>
-        </CartProvider>
-        <PerformanceMetrics />
-        {import.meta.env.DEV && <PerformanceMetricsDebug />}
-        <ShopifyAnalytics cookieDomain="hydrogen.shop" />
-      </ShopifyProvider>
-    </Suspense>
+    <>
+      <Suspense fallback={<HeaderFallback isHome={isHome} />}>
+        <EventsListener />
+        <ShopifyProvider countryCode={countryCode}>
+          <Seo
+            type="defaultSeo"
+            data={{
+              title: 'Hydrogen',
+              description:
+                "A custom storefront powered by Hydrogen, Shopify's React-based framework for building headless.",
+              titleTemplate: `%s · Hydrogen`,
+            }}
+          />
+          <CartProvider
+            countryCode={countryCode}
+            customerAccessToken={customerAccessToken}
+          >
+            <Router>
+              <FileRoutes
+                basePath={countryCode ? `/${countryCode}/` : undefined}
+              />
+              <Route path="*" page={<NotFound />} />
+            </Router>
+          </CartProvider>
+          <PerformanceMetrics />
+          {import.meta.env.DEV && <PerformanceMetricsDebug />}
+          <ShopifyAnalytics cookieDomain="staffshopnat.com" />
+        </ShopifyProvider>
+      </Suspense>
+      <AnalyticsListener />
+    </>
   );
 }
 
