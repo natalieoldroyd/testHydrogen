@@ -21,6 +21,7 @@ export function PageHeader({
 
   return (
     <header {...props} className={styles}>
+      <p>Hello staging</p>
       {heading && (
         <Heading as="h1" width="narrow" size="heading" className="inline-block">
           {heading}
